@@ -1,0 +1,44 @@
+/* referenced FunFacts Chrome extension https://chrome.google.com/webstore/detail/funfacts/mblmhpinekmkfpnhjaaelgkhloeglnkk */
+body {
+    background-color:black;
+}
+
+form {
+    padding: 10% 20% 0 20%;
+}
+
+
+#searchBar{
+    color: rgba(128, 128, 128, 0.685);
+    font-size: 1rem;
+
+    border-radius: 3rem;
+    padding: 1.25rem;
+    border-color: rgba(128, 128, 128, 0.685);
+    border: 1px;
+}
+
+input#searchBar{
+    color: rgba(128, 128, 128, 0.685);
+}
+
+#searchBar:focus{
+    outline: none;
+}
+
+#searchButton{
+    background-color: white;
+    font-size: 1rem;
+
+    margin-left: .5rem;
+
+    border-radius: 2rem;
+    
+    border: none;
+    
+    display: none;
+}
+
+#searchButton:hover{
+    border-color: black;
+}

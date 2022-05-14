@@ -1,0 +1,9 @@
+new tab shows a new random dino
+if possible, make it a new one each day instead of a new one each tab?
+info displayed:
+- dino name + pronunication
+- picture of fossil and depiction
+  - google images api ??
+- description
+  - ideally a story?? not just dry facts..
+- time period
