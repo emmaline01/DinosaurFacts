@@ -1,11 +1,14 @@
 {
-  "name": "Dino facts",
-  "description": "Random facts about dinosaurs every day!",
+  "name": "Daily Dino Facts",
+  "description": "A new random fact about dinosaurs every day!",
   "version": "1.0",
   "manifest_version": 3,
   "chrome_url_overrides" : {
     "newtab": "index.html"
   },
+  "host_permissions": [
+    "https://dinosaur-facts-api.shultzlab.com/*"
+  ],
   "permissions": [
     "storage"
   ]
