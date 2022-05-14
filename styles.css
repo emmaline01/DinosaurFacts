@@ -1,6 +1,6 @@
 /* referenced FunFacts Chrome extension https://chrome.google.com/webstore/detail/funfacts/mblmhpinekmkfpnhjaaelgkhloeglnkk */
 body {
-    background-color:black;
+    background-color:white;
 }
 
 form {
@@ -14,8 +14,6 @@ form {
 
     border-radius: 3rem;
     padding: 1.25rem;
-    border-color: rgba(128, 128, 128, 0.685);
-    border: 1px;
 }
 
 input#searchBar{
@@ -23,7 +21,7 @@ input#searchBar{
 }
 
 #searchBar:focus{
-    outline: none;
+    outline: 1px;
 }
 
 #searchButton{
