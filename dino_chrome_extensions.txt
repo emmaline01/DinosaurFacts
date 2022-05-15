@@ -7,3 +7,6 @@ info displayed:
 - description
   - ideally a story?? not just dry facts..
 - time period
+
+resources
+- https://dinosaurpictures.org/api/ would be nice if I didn't run into a CORS error
