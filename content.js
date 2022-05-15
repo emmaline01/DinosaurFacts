@@ -4,6 +4,52 @@ function setDino(name, desc) {
     document.getElementById("dinoDescription").innerHTML = desc;
 }
 
+// creates a bullet point for additional dino information
+function makeMoreDescBullet(bulletId) {
+    var bullet = document.createElement("li");
+    var parent = document.getElementById("moreDesc");
+    bullet.id = bulletId;
+    parent.appendChild(bullet);
+}
+
+// https://paleobiodb.org/data1.2/taxa/single_doc.html
+// gets more info about a given dinosaur using the Paleo DB
+function paleoDBInfo(dinoName) {
+    url = "https://paleobiodb.org/data1.2/taxa/single.json?name=" + dinoName + "&show=common,ecospace,app,img";
+
+    fetch(url)
+        .then(r => r.json())
+        .then(info => {
+            if (info.records.length == 0) {
+                console.log("info list doesn't exist");
+            }
+            var record = info.records[0];
+            if (record.hasOwnProperty('nm2')) {
+                document.getElementById("nickname").innerHTML = "(" + record.nm2 + ")";
+            }
+            if (record.hasOwnProperty('tli')) {
+                makeMoreDescBullet("timePeriod");
+                document.getElementById("timePeriod").innerHTML = "Lived in the " + record.tli + " time period";
+            }
+            if (record.hasOwnProperty('jdt')) {
+                makeMoreDescBullet("diet");
+                document.getElementById("diet").innerHTML = "Was an " + record.jdt;
+            }
+            if (record.hasOwnProperty('img')) {
+                console.log("has img " + record.img);
+                var image = document.createElement("img");
+                var imageParent = document.getElementById("dinoThumbnail");
+                image.id = "id";
+                image.className = "class";
+                image.src = "https://paleobiodb.org/data1.2/taxa/thumb.png?id=" + record.img.substring(4);
+                imageParent.appendChild(image);
+            }
+            
+        })
+        .catch(function(error) {console.log(error); });
+
+}
+
 // return the first image on the wikipedia page of dinoName
 async function wikipediaImageFromPage(dinoName) {
     var url = "https://en.wikipedia.org/w/api.php"; 
@@ -124,6 +170,7 @@ function setDinoImage(dinoName) {
         });
 }
 
+
 const currentDay = (new Date()).getDate();
 
 // for when local storage is reset
@@ -154,6 +201,6 @@ chrome.storage.local.get(['dinoNameStored', 'dinoDescStored', 'lastDate'], funct
         console.log("date same");
         setDino(result.dinoNameStored, result.dinoDescStored);
         setDinoImage(result.dinoNameStored);
-        
+        paleoDBInfo(result.dinoNameStored);
     }
 });

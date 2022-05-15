@@ -4,7 +4,7 @@ body {
 }
 
 form {
-    padding: 10% 20% 0 20%;
+    padding: 10% 15% 0 10%;
 }
 
 
@@ -39,4 +39,12 @@ input#searchBar{
 
 #searchButton:hover{
     border-color: black;
+}
+
+
+#dinoThumbnail {
+    /* filter: invert(100%); */
+    position: absolute;
+    bottom: 0px;
+    right: 10px;
 }
