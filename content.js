@@ -6,6 +6,8 @@ function setDino(name, desc) {
 
 // creates a bullet point for additional dino information
 function makeMoreDescBullet(bulletId) {
+    document.getElementById("moreDescLabel").innerHTML = "More info:";
+
     var bullet = document.createElement("li");
     var parent = document.getElementById("moreDesc");
     bullet.id = bulletId;
@@ -36,7 +38,6 @@ function paleoDBInfo(dinoName) {
                 document.getElementById("diet").innerHTML = "Was an " + record.jdt;
             }
             if (record.hasOwnProperty('img')) {
-                console.log("has img " + record.img);
                 var image = document.createElement("img");
                 var imageParent = document.getElementById("dinoThumbnail");
                 image.id = "id";
@@ -164,7 +165,7 @@ function setDinoImage(dinoName) {
                 image.id = "id";
                 image.className = "class";
                 image.src = imgUrl;
-                image.style.width = "300px";
+                image.style.width = "100%";
                 imageParent.appendChild(image);
             }); 
         });

@@ -1,10 +1,11 @@
 /* referenced FunFacts Chrome extension https://chrome.google.com/webstore/detail/funfacts/mblmhpinekmkfpnhjaaelgkhloeglnkk */
 body {
     background-color:white;
+    color: black;
 }
 
 form {
-    padding: 10% 15% 0 10%;
+    padding: 10% 15% 3% 10%;
 }
 
 
@@ -45,6 +46,6 @@ input#searchBar{
 #dinoThumbnail {
     /* filter: invert(100%); */
     position: absolute;
-    bottom: 0px;
+    bottom: 5px;
     right: 10px;
 }
