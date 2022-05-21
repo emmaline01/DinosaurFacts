@@ -14,11 +14,45 @@ function makeMoreDescBullet(bulletId) {
     parent.appendChild(bullet);
 }
 
+// takes in a string environment and returns the image tha corresponds to it
+function setBackgroundImg(environment) {
+    var environments = environment.split(",");
+    var picture = "";
+    switch(environments[0]) {
+        case "ground dwelling":
+            picture = "url('images/ground.jpg')";
+            break;
+        case "aquatic":
+            picture = "url('images/water.jpg')";
+            break; 
+        case "volant": //flying
+            picture = "url('images/sky.jpg')";
+            break;
+        default:
+            picture = "url('images/ground.jpg')";
+    }
+
+    document.body.style.backgroundImage = picture;
+    
+}
+
+// returns "a" or "an" depending on noun given
+function getCorrectA(noun) {
+    if (noun[0] == "a" || 
+        noun[0] == "e" ||
+        noun[0] == "i" ||
+        noun[0] == "o" ||
+        noun[0] == "u") {
+            return "an"
+        }
+    return "a"
+}
+
 // https://paleobiodb.org/data1.2/taxa/single_doc.html
 // gets more info about a given dinosaur using the Paleo DB
 function paleoDBInfo(dinoName) {
     url = "https://paleobiodb.org/data1.2/taxa/single.json?name=" + dinoName + "&show=common,ecospace,app,img";
-
+    // TODO: what if the dino isn't in this db? need to set background image
     fetch(url)
         .then(r => r.json())
         .then(info => {
@@ -29,13 +63,14 @@ function paleoDBInfo(dinoName) {
             if (record.hasOwnProperty('nm2')) {
                 document.getElementById("nickname").innerHTML = "(" + record.nm2 + ")";
             }
-            if (record.hasOwnProperty('tli')) {
+            if (record.hasOwnProperty('tei')) {
                 makeMoreDescBullet("timePeriod");
-                document.getElementById("timePeriod").innerHTML = "Lived in the " + record.tli + " time period";
+                document.getElementById("timePeriod").innerHTML = "Lived in the " + record.tei + " time period";
             }
             if (record.hasOwnProperty('jdt')) {
                 makeMoreDescBullet("diet");
-                document.getElementById("diet").innerHTML = "Was an " + record.jdt;
+                var s = "Was " + getCorrectA(String(record.jdt)) + " " + record.jdt;
+                document.getElementById("diet").innerHTML = s;
             }
             if (record.hasOwnProperty('img')) {
                 var image = document.createElement("img");
@@ -44,6 +79,16 @@ function paleoDBInfo(dinoName) {
                 image.className = "class";
                 image.src = "https://paleobiodb.org/data1.2/taxa/thumb.png?id=" + record.img.substring(4);
                 imageParent.appendChild(image);
+            }
+
+            if (record.hasOwnProperty('jlh')) {
+                makeMoreDescBullet("environment");
+                var s = "Lived " + getCorrectA(String(record.jlh)) + " " + record.jlh + " life";
+                document.getElementById("environment").innerHTML = s;
+                setBackgroundImg(String(record.jlh));
+            }
+            else {
+                setBackgroundImg("");
             }
             
         })
@@ -158,6 +203,8 @@ async function wikipediaRequestImgUrl(img) {
 
 // use the Wikipedia API to get an image of the dino
 function setDinoImage(dinoName) {
+    // TODO: it's possible that the article found doesn't correspond to the dinosaur. (check "Minmi")
+    // or it's possible no article is found at all 
     wikipediaImg(dinoName)
         .then(img => { 
             wikipediaRequestImgUrl(img).then(imgUrl => {
@@ -172,10 +219,11 @@ function setDinoImage(dinoName) {
         });
 }
 
+
 const currentDay = (new Date()).getDate();
 
 // for when local storage is reset
-// chrome.storage.local.set({'dinoNameStored': 'none', 'dinoDescStored': 'none' , 'lastDate': currentDay});
+chrome.storage.local.set({'dinoNameStored': 'none', 'dinoDescStored': 'none' , 'lastDate': currentDay});
 
 // get the stored dino name and description for the day
 chrome.storage.local.get(['dinoNameStored', 'dinoDescStored', 'lastDate'], function (result) {
@@ -183,6 +231,7 @@ chrome.storage.local.get(['dinoNameStored', 'dinoDescStored', 'lastDate'], funct
     
     // if it's a new day or there's no previous day, get a new dino
     if (currentDay !== result.lastDate || result.dinoNameStored == 'none') {
+        //TODO: this is missing so many dinos - plesiosaur, mosasaur, quetzalcoatlus
         fetch('https://dinosaur-facts-api.shultzlab.com/dinosaurs/random')
             .then(r => r.json())
             .then(newDino => {

@@ -1,24 +1,25 @@
 /* referenced FunFacts Chrome extension https://chrome.google.com/webstore/detail/funfacts/mblmhpinekmkfpnhjaaelgkhloeglnkk */
 body {
-    background-color:white;
     color: black;
 }
 
 form {
-    padding: 7% 15% 3% 10%;
+    padding: 5% 15% 3% 10%;
 }
 
 
 #searchBar{
-    color: rgba(128, 128, 128, 0.685);
+    background-color:rgb(230, 230, 230);
+    color: black;
     font-size: 1rem;
 
+    border-color:rgba(128, 128, 128, 0.685);
     border-radius: 3rem;
     padding: 1.25rem;
 }
 
 input#searchBar{
-    color: rgba(128, 128, 128, 0.685);
+    color: black;
 }
 
 #searchBar:focus{
@@ -42,6 +43,9 @@ input#searchBar{
     border-color: black;
 }
 
+.round {
+    border-radius: 10px;
+}
 
 #dinoThumbnail {
     /* filter: invert(100%); */

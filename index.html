@@ -15,50 +15,64 @@
 </head>
 
 <body>
-    
     <div class = "container-fluid">
-
-        <form action="http://www.google.com/search" method="GET">
-            <div class="form-row">
-                <div class="form-group col-md-2">
-                    <div id="dinoThumbnail"></div> 
-                </div>
-                <div class="form-group col-md-10">
-                    <input type="text" name="q" class="form-control" id="searchBar" placeholder="Search Google or type a URL">
-                </div>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="form-control" id="searchButton" value="Google Search">
-            </div>
-        </form>
+        <div class="row" style="padding-bottom:2%;"></div>
         
-
         <div class = "row">
-            <div class = "col-sm-2"></div>
-            <div class = "col-sm-4">
-                <div id="dinoImg"></div>
-            </div>
-            <div class = "col-sm-4">
-                <h2 id="dinoName"></h2>
-                <p id="nickname"></p>
-                <p id="dinoDescription"></p>
+            <div class = "col-sm-1"></div>
 
-                <p id="moreDescLabel"></p>
-                <ul id="moreDesc">
-                </ul>
+            <div class = "col-sm">
+                <div class = "container-fluid border border-secondary round" style="background-color:rgb(230, 230, 230);">
+
+                    <form action="http://www.google.com/search" method="GET">
+                        <div class="form-row">
+                            <div class="form-group col-md-1">
+                                <div id="dinoThumbnail"></div> 
+                            </div>
+                            <div class="form-group col-md-11">
+                                <input type="text" name="q" class="form-control" id="searchBar" placeholder="Search Google or type a URL">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="form-control" id="searchButton" value="Google Search">
+                        </div>
+                    </form>
+                    
+
+                    <div class = "row">
+                        <div class = "col-sm-1"></div>
+                        <div class = "col-sm-5">
+                            <div id="dinoImg"></div>
+                        </div>
+                        <div class = "col-sm-5">
+                            <h2 id="dinoName"></h2>
+                            <p id="nickname"></p>
+                            <p id="dinoDescription"></p>
+
+                            <p id="moreDescLabel"></p>
+                            <ul id="moreDesc">
+                            </ul>
+                        </div>
+                        <div class = "col-sm-1"></div>
+                    </div>
+
+                    
+                    <div class = "row" style="padding:2% 0 1% 0;">
+                        <div class = "col-sm-1"></div>
+                        <div class = "col-sm" style="color:rgba(128, 128, 128, 0.685); font-size:10px;">
+                            <a target="_blank" href="https://icons8.com/icon/kZ3rKBK582qK/dino">Dino</a> icon from <a target="_blank" href="https://icons8.com">Icons8</a>
+                            <br>Random dinosaur from <a href="https://dinosaur-facts-api.shultzlab.com/">this API by shultztom</a>
+                            <br>Splash image from <a href="https://www.wikipedia.org/">Wikipedia</a>
+                            <br>More info from <a href="https://paleobiodb.org/">PaleoDB</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class = "col-sm-2"></div>
+
+            <div class = col-sm-1></div>
         </div>
 
-        
-        <div class = "row" style="padding-top:7%;">
-            <div class = "col-sm" style="color:rgba(128, 128, 128, 0.685); font-size:10px;">
-                <a target="_blank" href="https://icons8.com/icon/kZ3rKBK582qK/dino">Dino</a> icon from <a target="_blank" href="https://icons8.com">Icons8</a>
-                <br>Random dinosaur from <a href="https://dinosaur-facts-api.shultzlab.com/">this API by shultztom</a>
-                <br>Splash image from <a href="https://www.wikipedia.org/">Wikipedia</a>
-                <br>More info from <a href="https://paleobiodb.org/">PaleoDB</a>
-            </div>
-        </div>
+        <div class="row" style="padding-bottom:2%;"></div>
     </div>
 
     <script src="./content.js"></script>
