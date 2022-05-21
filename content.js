@@ -51,6 +51,7 @@ function paleoDBInfo(dinoName) {
 
 }
 
+
 // return the first image on the wikipedia page of dinoName
 async function wikipediaImageFromPage(dinoName) {
     var url = "https://en.wikipedia.org/w/api.php"; 
@@ -171,7 +172,6 @@ function setDinoImage(dinoName) {
         });
 }
 
-
 const currentDay = (new Date()).getDate();
 
 // for when local storage is reset
@@ -190,6 +190,7 @@ chrome.storage.local.get(['dinoNameStored', 'dinoDescStored', 'lastDate'], funct
                 console.log(newDino);
                 setDino(newDino.Name, newDino.Description);
                 setDinoImage(newDino.Name);
+                paleoDBInfo(newDino.Name);
 
                 chrome.storage.local.set({
                     'dinoNameStored': newDino.Name, 
