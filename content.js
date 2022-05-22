@@ -4,6 +4,19 @@ function setDino(name, desc) {
     document.getElementById("dinoDescription").innerHTML = desc;
 }
 
+// sets the wikipedia attribution section with the correct uploader name and by
+// linking to the correct page
+function setWikipediaAttribution(uploader, dinoName) {
+    document.getElementById("wikipediaAttribution").innerHTML = "Splash image uploaded by ";
+    var link = document.createElement("a");
+    var linkParent = document.getElementById("wikipediaAttribution");
+    link.href = "https://en.wikipedia.org/wiki/" + dinoName;
+    link.id = "wikipediaAttributionLink";
+    linkParent.appendChild(link);
+
+    document.getElementById("wikipediaAttributionLink").innerHTML = uploader + " on Wikipedia";
+}
+
 // creates a bullet point for additional dino information
 function makeMoreDescBullet(bulletId) {
     document.getElementById("moreDescLabel").innerHTML = "More info:";
@@ -16,9 +29,8 @@ function makeMoreDescBullet(bulletId) {
 
 // takes in a string environment and returns the image tha corresponds to it
 function setBackgroundImg(environment) {
-    var environments = environment.split(",");
     var picture = "";
-    switch(environments[0]) {
+    switch(environment) {
         case "ground dwelling":
             picture = "url('images/ground.jpg')";
             break;
@@ -83,9 +95,10 @@ function paleoDBInfo(dinoName) {
 
             if (record.hasOwnProperty('jlh')) {
                 makeMoreDescBullet("environment");
-                var s = "Lived " + getCorrectA(String(record.jlh)) + " " + record.jlh + " life";
+                var environment = String(record.jlh).split(",")[0];
+                var s = "Lived " + getCorrectA(environment) + " " + environment + " life";
                 document.getElementById("environment").innerHTML = s;
-                setBackgroundImg(String(record.jlh));
+                setBackgroundImg(environment);
             }
             else {
                 setBackgroundImg("");
@@ -96,6 +109,7 @@ function paleoDBInfo(dinoName) {
 
 }
 
+// Wikipedia API docs  https://www.mediawiki.org/wiki/API:Properties
 
 // return the first image on the wikipedia page of dinoName
 async function wikipediaImageFromPage(dinoName) {
@@ -146,7 +160,7 @@ async function wikipediaImg(dinoName) {
     url = url + "?origin=*";
     Object.keys(params).forEach(function(key) { url += "&" + key + "=" + params[key]; });
 
-    imgName = ""
+    var imgName = "";
     await fetch(url)
         .then(function(response) { return response.json(); })
         .then(function(response) { 
@@ -171,7 +185,7 @@ async function wikipediaImg(dinoName) {
 }
 
 // returns url to a specific Wikipedia image
-async function wikipediaRequestImgUrl(img) {
+async function wikipediaRequestImgUrl(img, dinoName) {
     var url = "https://en.wikipedia.org/w/api.php"; 
 
     var params = {
@@ -185,7 +199,8 @@ async function wikipediaRequestImgUrl(img) {
     url = url + "?origin=*";
     Object.keys(params).forEach(function(key){url += "&" + key + "=" + params[key];});
 
-    imgUrl = "";
+    var imgUrl = "";
+    var uploader = "";
 
     await fetch(url)
         .then(function(response){return response.json();})
@@ -194,10 +209,12 @@ async function wikipediaRequestImgUrl(img) {
             for (var p in pages) {
                 console.log(pages[p].title + " is uploaded to:" + pages[p].imageinfo[0].url);
                 imgUrl = pages[p].imageinfo[0].url;
+                uploader = pages[p].imageinfo[0].user;
             }
         })
         .catch(function(error){console.log(error);});
-
+    
+    setWikipediaAttribution(uploader, dinoName);
     return imgUrl;
 }
 
@@ -207,11 +224,9 @@ function setDinoImage(dinoName) {
     // or it's possible no article is found at all 
     wikipediaImg(dinoName)
         .then(img => { 
-            wikipediaRequestImgUrl(img).then(imgUrl => {
+            wikipediaRequestImgUrl(img, dinoName).then(imgUrl => {
                 var image = document.createElement("img");
                 var imageParent = document.getElementById("dinoImg");
-                image.id = "id";
-                image.className = "class";
                 image.src = imgUrl;
                 image.style.width = "100%";
                 imageParent.appendChild(image);
@@ -223,11 +238,10 @@ function setDinoImage(dinoName) {
 const currentDay = (new Date()).getDate();
 
 // for when local storage is reset
-chrome.storage.local.set({'dinoNameStored': 'none', 'dinoDescStored': 'none' , 'lastDate': currentDay});
+// chrome.storage.local.set({'dinoNameStored': 'none', 'dinoDescStored': 'none' , 'lastDate': currentDay});
 
 // get the stored dino name and description for the day
 chrome.storage.local.get(['dinoNameStored', 'dinoDescStored', 'lastDate'], function (result) {
-    console.log(result);
     
     // if it's a new day or there's no previous day, get a new dino
     if (currentDay !== result.lastDate || result.dinoNameStored == 'none') {
@@ -235,8 +249,6 @@ chrome.storage.local.get(['dinoNameStored', 'dinoDescStored', 'lastDate'], funct
         fetch('https://dinosaur-facts-api.shultzlab.com/dinosaurs/random')
             .then(r => r.json())
             .then(newDino => {
-                console.log("date different");
-                console.log(newDino);
                 setDino(newDino.Name, newDino.Description);
                 setDinoImage(newDino.Name);
                 paleoDBInfo(newDino.Name);
@@ -249,7 +261,6 @@ chrome.storage.local.get(['dinoNameStored', 'dinoDescStored', 'lastDate'], funct
             .catch(function(error) {console.log(error); });
     } else {
         // use the dino of that day
-        console.log("date same");
         setDino(result.dinoNameStored, result.dinoDescStored);
         setDinoImage(result.dinoNameStored);
         paleoDBInfo(result.dinoNameStored);
