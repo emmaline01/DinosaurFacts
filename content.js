@@ -266,3 +266,13 @@ chrome.storage.local.get(['dinoNameStored', 'dinoDescStored', 'lastDate'], funct
         paleoDBInfo(result.dinoNameStored);
     }
 });
+
+
+
+// When the user clicks on sources button, open the popup
+const sourcesBtn = document.getElementById("popupBtnID");
+sourcesBtn.addEventListener("click", myFunction);
+function myFunction() {
+    var popup = document.getElementById("popupTextID");
+    popup.classList.toggle("show");
+}
