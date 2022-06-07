@@ -7,7 +7,7 @@ function setDino(name, desc) {
 // sets the wikipedia attribution section with the correct uploader name and by
 // linking to the correct page
 function setWikipediaAttribution(uploader, dinoName) {
-    document.getElementById("wikipediaAttribution").innerHTML = "Splash image uploaded by ";
+    document.getElementById("wikipediaAttribution").innerHTML = "Main image uploaded by ";
     var link = document.createElement("a");
     var linkParent = document.getElementById("wikipediaAttribution");
     link.href = "https://en.wikipedia.org/wiki/" + dinoName;
@@ -235,16 +235,13 @@ function setDinoImage(dinoName) {
 }
 
 
-const currentDay = (new Date()).getDate();
-
-// for when local storage is reset
-// chrome.storage.local.set({'dinoNameStored': 'none', 'dinoDescStored': 'none' , 'lastDate': currentDay});
 
 // get the stored dino name and description for the day
+const currentDay = (new Date()).getDate();
 chrome.storage.local.get(['dinoNameStored', 'dinoDescStored', 'lastDate'], function (result) {
     
     // if it's a new day or there's no previous day, get a new dino
-    if (currentDay !== result.lastDate || result.dinoNameStored == 'none') {
+    if (result.dinoNameStored == undefined || currentDay !== result.lastDate) {
         //TODO: this is missing so many dinos - plesiosaur, mosasaur, quetzalcoatlus
         fetch('https://dinosaur-facts-api.shultzlab.com/dinosaurs/random')
             .then(r => r.json())
@@ -266,7 +263,6 @@ chrome.storage.local.get(['dinoNameStored', 'dinoDescStored', 'lastDate'], funct
         paleoDBInfo(result.dinoNameStored);
     }
 });
-
 
 
 // When the user clicks on sources button, open the popup
