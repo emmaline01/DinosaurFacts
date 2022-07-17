@@ -1,3 +1,5 @@
+import { timeStageToPeriod } from './timeStageToPeriod.js';
+
 // set the dino's name and description in the html
 function setDino(name, desc) {
     document.getElementById("dinoName").innerHTML = name;
@@ -45,7 +47,6 @@ function setBackgroundImg(environment) {
     }
 
     document.body.style.backgroundImage = picture;
-    
 }
 
 // returns "a" or "an" depending on noun given
@@ -63,13 +64,13 @@ function getCorrectA(noun) {
 // https://paleobiodb.org/data1.2/taxa/single_doc.html
 // gets more info about a given dinosaur using the Paleo DB
 function paleoDBInfo(dinoName) {
-    url = "https://paleobiodb.org/data1.2/taxa/single.json?name=" + dinoName + "&show=common,ecospace,app,img";
+    var url = "https://paleobiodb.org/data1.2/taxa/single.json?name=" + dinoName + "&show=common,ecospace,app,img";
     // TODO: what if the dino isn't in this db? need to set background image
     fetch(url)
         .then(r => r.json())
         .then(info => {
             if (info.records.length == 0) {
-                console.log("info list doesn't exist");
+                console.log("info list from PaleoDB doesn't exist");
             }
             var record = info.records[0];
             if (record.hasOwnProperty('nm2')) {
@@ -77,7 +78,7 @@ function paleoDBInfo(dinoName) {
             }
             if (record.hasOwnProperty('tei')) {
                 makeMoreDescBullet("timePeriod");
-                document.getElementById("timePeriod").innerHTML = "Lived in the " + record.tei + " time period";
+                document.getElementById("timePeriod").innerHTML = "First lived in the " + timeStageToPeriod(record.tei);
             }
             if (record.hasOwnProperty('jdt')) {
                 makeMoreDescBullet("diet");
@@ -221,7 +222,7 @@ async function wikipediaRequestImgUrl(img, dinoName) {
 // use the Wikipedia API to get an image of the dino
 function setDinoImage(dinoName) {
     // TODO: it's possible that the article found doesn't correspond to the dinosaur. (check "Minmi")
-    // or it's possible no article is found at all 
+    // or it's possible no article is found at all (check "Magnirostris")
     wikipediaImg(dinoName)
         .then(img => { 
             wikipediaRequestImgUrl(img, dinoName).then(imgUrl => {
@@ -232,6 +233,17 @@ function setDinoImage(dinoName) {
                 imageParent.appendChild(image);
             }); 
         });
+}
+
+
+// When the user clicks on sources button, open the popup
+function sourcesBtn() {
+    const sourcesBtn = document.getElementById("popupBtnID");
+    sourcesBtn.addEventListener("click", myFunction);
+    function myFunction() {
+        var popup = document.getElementById("popupTextID");
+        popup.classList.toggle("show");
+    }
 }
 
 
@@ -263,12 +275,6 @@ chrome.storage.local.get(['dinoNameStored', 'dinoDescStored', 'lastDate'], funct
         paleoDBInfo(result.dinoNameStored);
     }
 });
+sourcesBtn();
 
 
-// When the user clicks on sources button, open the popup
-const sourcesBtn = document.getElementById("popupBtnID");
-sourcesBtn.addEventListener("click", myFunction);
-function myFunction() {
-    var popup = document.getElementById("popupTextID");
-    popup.classList.toggle("show");
-}

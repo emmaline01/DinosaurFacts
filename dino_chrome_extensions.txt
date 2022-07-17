@@ -1,5 +1,8 @@
+BRAINSTORMING
+
 new tab shows a new random dino
 if possible, make it a new one each day instead of a new one each tab?
+- include a button to generate a new dino
 info displayed:
 - dino name + pronunication
 - picture of fossil and depiction
