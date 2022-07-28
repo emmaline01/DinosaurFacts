@@ -74,7 +74,7 @@ function paleoDBInfo(dinoName) {
             }
             var record = info.records[0];
             if (record.hasOwnProperty('nm2')) {
-                document.getElementById("nickname").innerHTML = "(" + record.nm2 + ")";
+                document.getElementById("nickname").innerHTML = "&emsp;(" + record.nm2 + ")";
             }
             if (record.hasOwnProperty('tei')) {
                 makeMoreDescBullet("timePeriod");
@@ -222,7 +222,7 @@ async function wikipediaRequestImgUrl(img, dinoName) {
 // use the Wikipedia API to get an image of the dino
 function setDinoImage(dinoName) {
     // TODO: it's possible that the article found doesn't correspond to the dinosaur. (check "Minmi")
-    // or it's possible no article is found at all (check "Magnirostris")
+    // or it's possible no article is found at all (check "Magnirostris" or "Tyrannosaurus Rex")
     wikipediaImg(dinoName)
         .then(img => { 
             wikipediaRequestImgUrl(img, dinoName).then(imgUrl => {
